@@ -15,8 +15,7 @@ class ChannelMediaDisplayScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ChannelMediaDisplayScreen> createState() =>
-      _ChannelMediaDisplayScreenState();
+  State<ChannelMediaDisplayScreen> createState() => _ChannelMediaDisplayScreenState();
 }
 
 class _ChannelMediaDisplayScreenState extends State<ChannelMediaDisplayScreen> {
@@ -60,8 +59,8 @@ class _ChannelMediaDisplayScreenState extends State<ChannelMediaDisplayScreen> {
       ),
       body: ValueListenableBuilder(
         valueListenable: controller,
-        builder: (BuildContext context,
-            PagedValue<String, GetMessageResponse> value, Widget? child) {
+        builder:
+            (BuildContext context, PagedValue<String, GetMessageResponse> value, Widget? child) {
           return value.when(
             (items, nextPageKey, error) {
               if (items.isEmpty) {
@@ -78,15 +77,12 @@ class _ChannelMediaDisplayScreenState extends State<ChannelMediaDisplayScreen> {
                         AppLocalizations.of(context).noMedia,
                         style: TextStyle(
                           fontSize: 14.0,
-                          color: StreamChatTheme.of(context)
-                              .colorTheme
-                              .textHighEmphasis,
+                          color: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
                         ),
                       ),
                       const SizedBox(height: 8.0),
                       Text(
-                        AppLocalizations.of(context)
-                            .photosOrVideosWillAppearHere,
+                        AppLocalizations.of(context).photosOrVideosWillAppearHere,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 14.0,
@@ -104,9 +100,7 @@ class _ChannelMediaDisplayScreenState extends State<ChannelMediaDisplayScreen> {
 
               for (final item in value.asSuccess.items) {
                 item.message.attachments
-                    .where((e) =>
-                        (e.type == 'image' || e.type == 'video') &&
-                        e.ogScrapeUrl == null)
+                    .where((e) => (e.type == 'image' || e.type == 'video') && e.ogScrapeUrl == null)
                     .forEach((e) {
                   VideoPlayerController? controller;
                   if (e.type == 'video') {
@@ -131,8 +125,7 @@ class _ChannelMediaDisplayScreenState extends State<ChannelMediaDisplayScreen> {
                   }
                 },
                 child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
                   itemBuilder: (context, position) {
                     var channel = StreamChannel.of(context).channel;
                     return Padding(
@@ -162,10 +155,8 @@ class _ChannelMediaDisplayScreenState extends State<ChannelMediaDisplayScreen> {
                                     }
                                     router.pushNamed(
                                       Routes.CHANNEL_PAGE.name,
-                                      pathParameters:
-                                          Routes.CHANNEL_PAGE.params(channel),
-                                      queryParameters:
-                                          Routes.CHANNEL_PAGE.queryParams(m),
+                                      pathParameters: Routes.CHANNEL_PAGE.params(channel),
+                                      queryParameters: Routes.CHANNEL_PAGE.queryParams(m),
                                     );
                                   },
                                 ),

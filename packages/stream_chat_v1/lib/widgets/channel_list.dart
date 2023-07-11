@@ -88,8 +88,7 @@ class _ChannelList extends State<ChannelList> {
       },
       child: NotificationListener<ScrollUpdateNotification>(
         onNotification: (ScrollNotification scrollInfo) {
-          if (_scrollController.position.userScrollDirection ==
-              ScrollDirection.reverse) {
+          if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
             FocusScope.of(context).unfocus();
           }
           return true;
@@ -162,8 +161,7 @@ class _ChannelList extends State<ChannelList> {
                         router.pushNamed(
                           Routes.CHANNEL_PAGE.name,
                           pathParameters: Routes.CHANNEL_PAGE.params(channel),
-                          queryParameters:
-                              Routes.CHANNEL_PAGE.queryParams(message),
+                          queryParameters: Routes.CHANNEL_PAGE.queryParams(message),
                         );
                       },
                     );
@@ -173,14 +171,14 @@ class _ChannelList extends State<ChannelList> {
                   closeWhenOpened: true,
                   child: RefreshIndicator(
                     onRefresh: _channelListController.refresh,
-                    child: StreamChannelListView(
+                    child: StreamChannelGridView(
                       controller: _channelListController,
                       itemBuilder: (context, channels, index, defaultWidget) {
                         final chatTheme = StreamChatTheme.of(context);
                         final backgroundColor = chatTheme.colorTheme.inputBg;
                         final channel = channels[index];
-                        final canDeleteChannel = channel.ownCapabilities
-                            .contains(PermissionType.deleteChannel);
+                        final canDeleteChannel =
+                            channel.ownCapabilities.contains(PermissionType.deleteChannel);
                         return Slidable(
                           groupTag: 'channels-actions',
                           endActionPane: ActionPane(
@@ -200,29 +198,21 @@ class _ChannelList extends State<ChannelList> {
                                         MaterialPageRoute(
                                           builder: (context) {
                                             final isOneToOne =
-                                                channel.memberCount == 2 &&
-                                                    channel.isDistinct;
+                                                channel.memberCount == 2 && channel.isDistinct;
                                             return StreamChannel(
                                               channel: channel,
                                               child: isOneToOne
                                                   ? ChatInfoScreen(
-                                                      messageTheme: chatTheme
-                                                          .ownMessageTheme,
-                                                      user: channel
-                                                          .state!.members
+                                                      messageTheme: chatTheme.ownMessageTheme,
+                                                      user: channel.state!.members
                                                           .where((m) =>
                                                               m.userId !=
-                                                              channel
-                                                                  .client
-                                                                  .state
-                                                                  .currentUser!
-                                                                  .id)
+                                                              channel.client.state.currentUser!.id)
                                                           .first
                                                           .user,
                                                     )
                                                   : GroupInfoScreen(
-                                                      messageTheme: chatTheme
-                                                          .ownMessageTheme,
+                                                      messageTheme: chatTheme.ownMessageTheme,
                                                     ),
                                             );
                                           },
@@ -240,8 +230,7 @@ class _ChannelList extends State<ChannelList> {
                                     color: chatTheme.colorTheme.accentError,
                                   ),
                                   onPressed: (_) async {
-                                    final res =
-                                        await showConfirmationBottomSheet(
+                                    final res = await showConfirmationBottomSheet(
                                       context,
                                       title: 'Delete Conversation',
                                       question:
@@ -253,8 +242,7 @@ class _ChannelList extends State<ChannelList> {
                                       ),
                                     );
                                     if (res == true) {
-                                      await _channelListController
-                                          .deleteChannel(channel);
+                                      await _channelListController.deleteChannel(channel);
                                     }
                                   },
                                 ),
@@ -276,24 +264,16 @@ class _ChannelList extends State<ChannelList> {
                             child: StreamScrollViewEmptyWidget(
                               emptyIcon: StreamSvgIcon.message(
                                 size: 148,
-                                color: StreamChatTheme.of(context)
-                                    .colorTheme
-                                    .disabled,
+                                color: StreamChatTheme.of(context).colorTheme.disabled,
                               ),
                               emptyTitle: TextButton(
                                 onPressed: () {
-                                  GoRouter.of(context)
-                                      .pushNamed(Routes.NEW_CHAT.name);
+                                  GoRouter.of(context).pushNamed(Routes.NEW_CHAT.name);
                                 },
                                 child: Text(
                                   'Start a chat',
-                                  style: StreamChatTheme.of(context)
-                                      .textTheme
-                                      .bodyBold
-                                      .copyWith(
-                                        color: StreamChatTheme.of(context)
-                                            .colorTheme
-                                            .accentPrimary,
+                                  style: StreamChatTheme.of(context).textTheme.bodyBold.copyWith(
+                                        color: StreamChatTheme.of(context).colorTheme.accentPrimary,
                                       ),
                                 ),
                               ),

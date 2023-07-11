@@ -23,8 +23,7 @@ class ChannelPage extends StatefulWidget {
 
 class _ChannelPageState extends State<ChannelPage> {
   FocusNode? _focusNode;
-  final StreamMessageInputController _messageInputController =
-      StreamMessageInputController();
+  final StreamMessageInputController _messageInputController = StreamMessageInputController();
 
   @override
   void initState() {
@@ -104,8 +103,7 @@ class _ChannelPageState extends State<ChannelPage> {
                         router.goNamed(
                           Routes.CHANNEL_PAGE.name,
                           pathParameters: Routes.CHANNEL_PAGE.params(channel),
-                          queryParameters:
-                              Routes.CHANNEL_PAGE.queryParams(message),
+                          queryParameters: Routes.CHANNEL_PAGE.queryParams(message),
                         );
                       },
                       bottomRowBuilderWithDefaultWidget: (
@@ -131,10 +129,7 @@ class _ChannelPageState extends State<ChannelPage> {
                   right: 0,
                   child: Container(
                     alignment: Alignment.centerLeft,
-                    color: StreamChatTheme.of(context)
-                        .colorTheme
-                        .appBg
-                        .withOpacity(.9),
+                    color: StreamChatTheme.of(context).colorTheme.appBg.withOpacity(.9),
                     child: StreamTypingIndicator(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
@@ -143,10 +138,7 @@ class _ChannelPageState extends State<ChannelPage> {
                       style: StreamChatTheme.of(context)
                           .textTheme
                           .footnote
-                          .copyWith(
-                              color: StreamChatTheme.of(context)
-                                  .colorTheme
-                                  .textLowEmphasis),
+                          .copyWith(color: StreamChatTheme.of(context).colorTheme.textLowEmphasis),
                     ),
                   ),
                 ),
