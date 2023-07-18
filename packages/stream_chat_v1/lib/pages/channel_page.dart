@@ -48,33 +48,33 @@ class _ChannelPageState extends State<ChannelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: StreamChatTheme.of(context).colorTheme.appBg,
-      appBar: StreamChannelHeader(
-        showTypingIndicator: false,
-        onBackPressed: () => GoRouter.of(context).pop(),
-        onImageTap: () async {
-          final channel = StreamChannel.of(context).channel;
-          final router = GoRouter.of(context);
+      // appBar: StreamChannelHeader(
+      //   showTypingIndicator: false,
+      //   onBackPressed: () => GoRouter.of(context).pop(),
+      //   onImageTap: () async {
+      //     final channel = StreamChannel.of(context).channel;
+      //     final router = GoRouter.of(context);
 
-          if (channel.memberCount == 2 && channel.isDistinct) {
-            final currentUser = StreamChat.of(context).currentUser;
-            final otherUser = channel.state!.members.firstWhereOrNull(
-              (element) => element.user!.id != currentUser!.id,
-            );
-            if (otherUser != null) {
-              router.pushNamed(
-                Routes.CHAT_INFO_SCREEN.name,
-                pathParameters: Routes.CHAT_INFO_SCREEN.params(channel),
-                extra: otherUser.user,
-              );
-            }
-          } else {
-            GoRouter.of(context).pushNamed(
-              Routes.GROUP_INFO_SCREEN.name,
-              pathParameters: Routes.GROUP_INFO_SCREEN.params(channel),
-            );
-          }
-        },
-      ),
+      //     if (channel.memberCount == 2 && channel.isDistinct) {
+      //       final currentUser = StreamChat.of(context).currentUser;
+      //       final otherUser = channel.state!.members.firstWhereOrNull(
+      //         (element) => element.user!.id != currentUser!.id,
+      //       );
+      //       if (otherUser != null) {
+      //         router.pushNamed(
+      //           Routes.CHAT_INFO_SCREEN.name,
+      //           pathParameters: Routes.CHAT_INFO_SCREEN.params(channel),
+      //           extra: otherUser.user,
+      //         );
+      //       }
+      //     } else {
+      //       GoRouter.of(context).pushNamed(
+      //         Routes.GROUP_INFO_SCREEN.name,
+      //         pathParameters: Routes.GROUP_INFO_SCREEN.params(channel),
+      //       );
+      //     }
+      //   },
+      // ),
       body: Column(
         children: <Widget>[
           Expanded(

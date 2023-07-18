@@ -152,10 +152,8 @@ class _StreamChatSampleAppState extends State<StreamChatSampleApp>
 
   Future<void> _initFirebaseMessaging(StreamChatClient client) async {
     userIdSubscription?.cancel();
-    userIdSubscription = client.state.currentUserStream
-        .map((it) => it?.id)
-        .distinct()
-        .listen((userId) async {
+    userIdSubscription =
+        client.state.currentUserStream.map((it) => it?.id).distinct().listen((userId) async {
       // User logged in
       if (userId != null) {
         // Requests notification permission.
@@ -163,14 +161,14 @@ class _StreamChatSampleAppState extends State<StreamChatSampleApp>
         // Sets callback for background messages.
         FirebaseMessaging.onBackgroundMessage(_onFirebaseBackgroundMessage);
         // Sets callback for the notification click event.
-        firebaseSubscriptions.add(FirebaseMessaging.onMessageOpenedApp
-            .listen(_onFirebaseMessageOpenedApp(client)));
+        firebaseSubscriptions
+            .add(FirebaseMessaging.onMessageOpenedApp.listen(_onFirebaseMessageOpenedApp(client)));
         // Sets callback for foreground messages
-        firebaseSubscriptions.add(FirebaseMessaging.onMessage
-            .listen(_onFirebaseForegroundMessage(client)));
+        firebaseSubscriptions
+            .add(FirebaseMessaging.onMessage.listen(_onFirebaseForegroundMessage(client)));
         // Sets callback for the token refresh event.
-        firebaseSubscriptions.add(FirebaseMessaging.instance.onTokenRefresh
-            .listen(_onFirebaseTokenRefresh(client)));
+        firebaseSubscriptions
+            .add(FirebaseMessaging.instance.onTokenRefresh.listen(_onFirebaseTokenRefresh(client)));
 
         final token = await FirebaseMessaging.instance.getToken();
         if (token != null) {
@@ -218,8 +216,7 @@ class _StreamChatSampleAppState extends State<StreamChatSampleApp>
   /// Constructs callback for foreground notification handling.
   OnRemoteMessage _onFirebaseForegroundMessage(StreamChatClient client) {
     return (message) async {
-      debugPrint(
-          '[onForegroundMessage] #firebase; message: ${message.toMap()}');
+      debugPrint('[onForegroundMessage] #firebase; message: ${message.toMap()}');
     };
   }
 
@@ -278,8 +275,8 @@ class _StreamChatSampleAppState extends State<StreamChatSampleApp>
     if (localNotificationObserver != null) {
       localNotificationObserver!.dispose();
     }
-    localNotificationObserver = LocalNotificationObserver(
-        _initNotifier.initData!.client, _navigatorKey);
+    localNotificationObserver =
+        LocalNotificationObserver(_initNotifier.initData!.client, _navigatorKey);
 
     return GoRouter(
       refreshListenable: _initNotifier,
@@ -287,8 +284,7 @@ class _StreamChatSampleAppState extends State<StreamChatSampleApp>
       navigatorKey: _navigatorKey,
       observers: [localNotificationObserver!],
       redirect: (context, state) {
-        final loggedIn =
-            _initNotifier.initData?.client.state.currentUser != null;
+        final loggedIn = _initNotifier.initData?.client.state.currentUser != null;
         final loggingIn = state.matchedLocation == Routes.CHOOSE_USER.path ||
             state.matchedLocation == Routes.ADVANCED_OPTIONS.path;
 

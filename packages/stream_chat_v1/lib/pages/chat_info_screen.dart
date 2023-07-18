@@ -327,7 +327,7 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
         );
       } else {
         alternativeWidget = Text(
-          '${AppLocalizations.of(context).lastSeen} ${Jiffy.parseFromDateTime(otherMember.lastActive!).fromNow()}',
+          '${AppLocalizations.of(context).lastSeen} ${Jiffy(otherMember.lastActive!).fromNow()}',
           style: TextStyle(
               color: StreamChatTheme.of(context).colorTheme.textHighEmphasis.withOpacity(0.5)),
         );

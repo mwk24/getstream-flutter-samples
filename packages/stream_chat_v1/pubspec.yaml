@@ -27,8 +27,10 @@ dependencies:
   go_router: ^8.0.5
   provider: ^6.0.5
   video_player: ^2.6.1
-  firebase_core: ^2.14.0
+  firebase_core: ^2.15.0
   firebase_messaging: ^14.6.3
+  firebase_auth: 4.6.0
+  cloud_functions: ^4.3.4
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

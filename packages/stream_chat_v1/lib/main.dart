@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:example/app.dart';
 import 'package:example/utils/app_config.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -46,6 +47,15 @@ Future<void> main() async {
         SentryFlutter.init((options) => options.dsn = sentryDsn),
         Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
       ]);
+
+      if (kDebugMode) {
+        try {
+          FirebaseFunctions.instance.useFunctionsEmulator('192.168.86.23', 5001);
+        } catch (e) {
+          // ignore: avoid_print
+          print(e);
+        }
+      }
 
       runApp(const StreamChatSampleApp());
     },

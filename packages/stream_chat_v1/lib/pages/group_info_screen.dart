@@ -923,7 +923,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
         );
       } else {
         alternativeWidget = Text(
-          '${AppLocalizations.of(context).lastSeen} ${Jiffy.parseFromDateTime(otherMember.lastActive!).fromNow()}',
+          '${AppLocalizations.of(context).lastSeen} ${Jiffy(otherMember.lastActive!).fromNow()}',
           style: TextStyle(
               color: StreamChatTheme.of(context).colorTheme.textHighEmphasis.withOpacity(0.5)),
         );
@@ -1009,7 +1009,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
     if (user.online) {
       return AppLocalizations.of(context).online;
     } else {
-      return '${AppLocalizations.of(context).lastSeen} ${Jiffy.parseFromDateTime(user.lastActive!).fromNow()}';
+      return '${AppLocalizations.of(context).lastSeen} ${Jiffy(user.lastActive!).fromNow()}';
     }
   }
 }

@@ -44,46 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyA4Obi2paSQ1IZZ88OcMC98DJlpV16DAzE',
-    appId: '1:674907137625:web:a4b97e5d080ec165d7f348',
-    messagingSenderId: '674907137625',
-    projectId: 'stream-chat-internal',
-    authDomain: 'stream-chat-internal.firebaseapp.com',
-    databaseURL: 'https://stream-chat-internal.firebaseio.com',
-    storageBucket: 'stream-chat-internal.appspot.com',
-    measurementId: 'G-F2RV4P139L',
+    apiKey: 'AIzaSyD6ZgqOySWdKxqc7z3-g6x6cl4KcayCVFs',
+    appId: '1:484969089316:web:c5d3da5febbbc8bf9dcbb1',
+    messagingSenderId: '484969089316',
+    projectId: 'group-fund-7becd',
+    authDomain: 'group-fund-7becd.firebaseapp.com',
+    storageBucket: 'group-fund-7becd.appspot.com',
+    measurementId: 'G-8YL5Z61T9Y',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBArS4RH7lUn3xbD-jhzWl5hVWZhliRgY0',
-    appId: '1:674907137625:android:e55b74fd5747e39ad7f348',
-    messagingSenderId: '674907137625',
-    projectId: 'stream-chat-internal',
-    databaseURL: 'https://stream-chat-internal.firebaseio.com',
-    storageBucket: 'stream-chat-internal.appspot.com',
+    apiKey: 'AIzaSyB2p1vCrvG785lkl7zc9HapJFP6xjnxk7c',
+    appId: '1:484969089316:android:ab149ef6835f934e9dcbb1',
+    messagingSenderId: '484969089316',
+    projectId: 'group-fund-7becd',
+    storageBucket: 'group-fund-7becd.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBTAsaKFUPLAJqfsLiz0yPUVzwrgJkOwSE',
-    appId: '1:674907137625:ios:cafb9fb076a453c4d7f348',
-    messagingSenderId: '674907137625',
-    projectId: 'stream-chat-internal',
-    databaseURL: 'https://stream-chat-internal.firebaseio.com',
-    storageBucket: 'stream-chat-internal.appspot.com',
-    androidClientId: '674907137625-2scfo9a5cs074dced5vhm712ej6hhtpm.apps.googleusercontent.com',
-    iosClientId: '674907137625-flarfn9cefu4lermgpbc4b8rm8l15ian.apps.googleusercontent.com',
-    iosBundleId: 'io.getstream.flutter',
+    apiKey: 'AIzaSyAm3j8STvWtK8vjPNim3OGFhz6mblrmt1U',
+    appId: '1:484969089316:ios:942381ada05ceab09dcbb1',
+    messagingSenderId: '484969089316',
+    projectId: 'group-fund-7becd',
+    storageBucket: 'group-fund-7becd.appspot.com',
+    iosClientId: '484969089316-e0jvl38928e1f6hvfpd7mtfh93cm8tlk.apps.googleusercontent.com',
+    iosBundleId: 'com.mwk24.getstreamdemo',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBTAsaKFUPLAJqfsLiz0yPUVzwrgJkOwSE',
-    appId: '1:674907137625:ios:c719c700198c28b1d7f348',
-    messagingSenderId: '674907137625',
-    projectId: 'stream-chat-internal',
-    databaseURL: 'https://stream-chat-internal.firebaseio.com',
-    storageBucket: 'stream-chat-internal.appspot.com',
-    androidClientId: '674907137625-2scfo9a5cs074dced5vhm712ej6hhtpm.apps.googleusercontent.com',
-    iosClientId: '674907137625-p3msks3snq0h22l7ekpqcf0frr0vt8mg.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAm3j8STvWtK8vjPNim3OGFhz6mblrmt1U',
+    appId: '1:484969089316:ios:1eb82990e1b02ca39dcbb1',
+    messagingSenderId: '484969089316',
+    projectId: 'group-fund-7becd',
+    storageBucket: 'group-fund-7becd.appspot.com',
+    iosClientId: '484969089316-r44lke7rq0b2oup1nvvo8c31pd3ahfvc.apps.googleusercontent.com',
     iosBundleId: 'io.getstream.streamChatV1',
   );
 }

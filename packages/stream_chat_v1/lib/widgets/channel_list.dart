@@ -1,14 +1,17 @@
 import 'dart:async';
 
+import 'package:example/new_pages/header.dart';
 import 'package:example/utils/localizations.dart';
 import 'package:example/routes/routes.dart';
 import 'package:example/widgets/search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../pages/channel_page.dart';
 import '../pages/chat_info_screen.dart';
 import '../pages/group_info_screen.dart';
 
@@ -19,7 +22,7 @@ class ChannelList extends StatefulWidget {
   State<ChannelList> createState() => _ChannelList();
 }
 
-class _ChannelList extends State<ChannelList> {
+class _ChannelList extends State<ChannelList> with StreamChannelListEventHandler {
   final ScrollController _scrollController = ScrollController();
 
   late final StreamMessageSearchListController _messageSearchListController =
@@ -57,14 +60,21 @@ class _ChannelList extends State<ChannelList> {
   }
 
   late final _channelListController = StreamChannelListController(
-    client: StreamChat.of(context).client,
-    filter: Filter.in_(
-      'members',
-      [StreamChat.of(context).currentUser!.id],
-    ),
-    presence: true,
-    limit: 30,
-  );
+      client: StreamChat.of(context).client,
+      channelStateSort: [
+        SortOption(
+          'created_at',
+          direction: SortOption.DESC,
+        ),
+      ],
+      // filter: Filter.in_(
+      //   'name',
+      //   ['New group'],
+      // ),
+
+      presence: true,
+      limit: 6,
+      eventHandler: this);
 
   @override
   void dispose() {
@@ -74,6 +84,8 @@ class _ChannelList extends State<ChannelList> {
     _channelListController.dispose();
     super.dispose();
   }
+
+  Channel? selectedChannel;
 
   @override
   Widget build(BuildContext context) {
@@ -93,199 +105,337 @@ class _ChannelList extends State<ChannelList> {
           }
           return true;
         },
-        child: NestedScrollView(
-          controller: _scrollController,
-          floatHeaderSlivers: false,
-          headerSliverBuilder: (_, __) => [
-            SliverToBoxAdapter(
-              child: SearchTextField(
-                controller: _controller,
-                showCloseButton: _isSearchActive,
-                hintText: AppLocalizations.of(context).search,
-              ),
+        child: Column(
+          children: [
+            GroupFundHeader(
+              onTapBack: () => setState(() {
+                selectedChannel = null;
+              }),
+              channel: selectedChannel,
             ),
-          ],
-          body: _isSearchActive
-              ? StreamMessageSearchListView(
-                  controller: _messageSearchListController,
-                  emptyBuilder: (_) {
-                    return LayoutBuilder(
-                      builder: (context, viewportConstraints) {
-                        return SingleChildScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              minHeight: viewportConstraints.maxHeight,
-                            ),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(24),
-                                    child: StreamSvgIcon.search(
-                                      size: 96,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Text(
-                                    AppLocalizations.of(context).noResults,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  itemBuilder: (
-                    context,
-                    messageResponses,
-                    index,
-                    defaultWidget,
-                  ) {
-                    return defaultWidget.copyWith(
-                      onTap: () async {
-                        final messageResponse = messageResponses[index];
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        final client = StreamChat.of(context).client;
-                        final router = GoRouter.of(context);
-                        final message = messageResponse.message;
-                        final channel = client.channel(
-                          messageResponse.channel!.type,
-                          id: messageResponse.channel!.id,
-                        );
-                        if (channel.state == null) {
-                          await channel.watch();
-                        }
-                        router.pushNamed(
-                          Routes.CHANNEL_PAGE.name,
-                          pathParameters: Routes.CHANNEL_PAGE.params(channel),
-                          queryParameters: Routes.CHANNEL_PAGE.queryParams(message),
-                        );
-                      },
-                    );
-                  },
-                )
-              : SlidableAutoCloseBehavior(
-                  closeWhenOpened: true,
-                  child: RefreshIndicator(
-                    onRefresh: _channelListController.refresh,
-                    child: StreamChannelGridView(
-                      controller: _channelListController,
-                      itemBuilder: (context, channels, index, defaultWidget) {
-                        final chatTheme = StreamChatTheme.of(context);
-                        final backgroundColor = chatTheme.colorTheme.inputBg;
-                        final channel = channels[index];
-                        final canDeleteChannel =
-                            channel.ownCapabilities.contains(PermissionType.deleteChannel);
-                        return Slidable(
-                          groupTag: 'channels-actions',
-                          endActionPane: ActionPane(
-                            extentRatio: canDeleteChannel ? 0.40 : 0.20,
-                            motion: const BehindMotion(),
-                            children: [
-                              CustomSlidableAction(
-                                backgroundColor: backgroundColor,
-                                onPressed: (_) {
-                                  showChannelInfoModalBottomSheet(
-                                    context: context,
-                                    channel: channel,
-                                    onViewInfoTap: () {
-                                      Navigator.pop(context);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            final isOneToOne =
-                                                channel.memberCount == 2 && channel.isDistinct;
-                                            return StreamChannel(
-                                              channel: channel,
-                                              child: isOneToOne
-                                                  ? ChatInfoScreen(
-                                                      messageTheme: chatTheme.ownMessageTheme,
-                                                      user: channel.state!.members
-                                                          .where((m) =>
-                                                              m.userId !=
-                                                              channel.client.state.currentUser!.id)
-                                                          .first
-                                                          .user,
-                                                    )
-                                                  : GroupInfoScreen(
-                                                      messageTheme: chatTheme.ownMessageTheme,
-                                                    ),
-                                            );
-                                          },
+            selectedChannel != null
+                ? Expanded(
+                    child: StreamChannel(
+                      channel: selectedChannel!,
+                      child: Column(children: const <Widget>[
+                        Expanded(
+                          child: StreamMessageListView(),
+                        ),
+                        StreamMessageInput(),
+                      ]),
+                    ),
+                  )
+                : Expanded(
+                    child: NestedScrollView(
+                      controller: _scrollController,
+                      floatHeaderSlivers: false,
+                      headerSliverBuilder: (_, __) => [],
+                      // headerSliverBuilder: (_, __) => [
+                      //   SliverToBoxAdapter(
+                      //     child: SearchTextField(
+                      //       controller: _controller,
+                      //       showCloseButton: _isSearchActive,
+                      //       hintText: AppLocalizations.of(context).search,
+                      //     ),
+                      //   ),
+                      // ],
+                      body: _isSearchActive
+                          ? StreamMessageSearchListView(
+                              controller: _messageSearchListController,
+                              emptyBuilder: (_) {
+                                return LayoutBuilder(
+                                  builder: (context, viewportConstraints) {
+                                    return SingleChildScrollView(
+                                      physics: const AlwaysScrollableScrollPhysics(),
+                                      child: ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                          minHeight: viewportConstraints.maxHeight,
                                         ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: const Icon(Icons.more_horiz),
-                              ),
-                              if (canDeleteChannel)
-                                CustomSlidableAction(
-                                  backgroundColor: backgroundColor,
-                                  child: StreamSvgIcon.delete(
-                                    color: chatTheme.colorTheme.accentError,
-                                  ),
-                                  onPressed: (_) async {
-                                    final res = await showConfirmationBottomSheet(
-                                      context,
-                                      title: 'Delete Conversation',
-                                      question:
-                                          'Are you sure you want to delete this conversation?',
-                                      okText: 'Delete',
-                                      cancelText: 'Cancel',
-                                      icon: StreamSvgIcon.delete(
-                                        color: chatTheme.colorTheme.accentError,
+                                        child: Center(
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(24),
+                                                child: StreamSvgIcon.search(
+                                                  size: 96,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              Text(
+                                                AppLocalizations.of(context).noResults,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     );
-                                    if (res == true) {
-                                      await _channelListController.deleteChannel(channel);
-                                    }
                                   },
-                                ),
-                            ],
-                          ),
-                          child: defaultWidget,
-                        );
-                      },
-                      onChannelTap: (channel) {
-                        GoRouter.of(context).pushNamed(
-                          Routes.CHANNEL_PAGE.name,
-                          pathParameters: Routes.CHANNEL_PAGE.params(channel),
-                        );
-                      },
-                      emptyBuilder: (_) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: StreamScrollViewEmptyWidget(
-                              emptyIcon: StreamSvgIcon.message(
-                                size: 148,
-                                color: StreamChatTheme.of(context).colorTheme.disabled,
-                              ),
-                              emptyTitle: TextButton(
-                                onPressed: () {
-                                  GoRouter.of(context).pushNamed(Routes.NEW_CHAT.name);
-                                },
-                                child: Text(
-                                  'Start a chat',
-                                  style: StreamChatTheme.of(context).textTheme.bodyBold.copyWith(
-                                        color: StreamChatTheme.of(context).colorTheme.accentPrimary,
+                                );
+                              },
+                              itemBuilder: (
+                                context,
+                                messageResponses,
+                                index,
+                                defaultWidget,
+                              ) {
+                                return defaultWidget.copyWith(
+                                  onTap: () async {
+                                    final messageResponse = messageResponses[index];
+                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    final client = StreamChat.of(context).client;
+                                    final router = GoRouter.of(context);
+                                    final message = messageResponse.message;
+                                    final channel = client.channel(
+                                      messageResponse.channel!.type,
+                                      id: messageResponse.channel!.id,
+                                    );
+                                    if (channel.state == null) {
+                                      await channel.watch();
+                                    }
+                                    router.pushNamed(
+                                      Routes.CHANNEL_PAGE.name,
+                                      pathParameters: Routes.CHANNEL_PAGE.params(channel),
+                                      queryParameters: Routes.CHANNEL_PAGE.queryParams(message),
+                                    );
+                                  },
+                                );
+                              },
+                            )
+                          : SlidableAutoCloseBehavior(
+                              closeWhenOpened: true,
+                              child: RefreshIndicator(
+                                onRefresh: _channelListController.refresh,
+                                child: StreamChannelGridView(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                                  controller: _channelListController,
+                                  itemBuilder: (context, channels, index, defaultWidget) {
+                                    final chatTheme = StreamChatTheme.of(context);
+                                    final backgroundColor = chatTheme.colorTheme.inputBg;
+                                    final channel = channels[index];
+                                    final canDeleteChannel = channel.ownCapabilities
+                                        .contains(PermissionType.deleteChannel);
+                                    return Slidable(
+                                      groupTag: 'channels-actions',
+                                      endActionPane: ActionPane(
+                                        extentRatio: canDeleteChannel ? 0.40 : 0.20,
+                                        motion: const BehindMotion(),
+                                        children: [
+                                          CustomSlidableAction(
+                                            backgroundColor: backgroundColor,
+                                            onPressed: (_) {
+                                              showChannelInfoModalBottomSheet(
+                                                context: context,
+                                                channel: channel,
+                                                onViewInfoTap: () {
+                                                  Navigator.pop(context);
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) {
+                                                        final isOneToOne =
+                                                            channel.memberCount == 2 &&
+                                                                channel.isDistinct;
+                                                        return StreamChannel(
+                                                          channel: channel,
+                                                          child: isOneToOne
+                                                              ? ChatInfoScreen(
+                                                                  messageTheme:
+                                                                      chatTheme.ownMessageTheme,
+                                                                  user: channel.state!.members
+                                                                      .where((m) =>
+                                                                          m.userId !=
+                                                                          channel.client.state
+                                                                              .currentUser!.id)
+                                                                      .first
+                                                                      .user,
+                                                                )
+                                                              : GroupInfoScreen(
+                                                                  messageTheme:
+                                                                      chatTheme.ownMessageTheme,
+                                                                ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: const Icon(Icons.more_horiz),
+                                          ),
+                                          if (canDeleteChannel)
+                                            CustomSlidableAction(
+                                              backgroundColor: backgroundColor,
+                                              child: StreamSvgIcon.delete(
+                                                color: chatTheme.colorTheme.accentError,
+                                              ),
+                                              onPressed: (_) async {
+                                                final res = await showConfirmationBottomSheet(
+                                                  context,
+                                                  title: 'Delete Conversation',
+                                                  question:
+                                                      'Are you sure you want to delete this conversation?',
+                                                  okText: 'Delete',
+                                                  cancelText: 'Cancel',
+                                                  icon: StreamSvgIcon.delete(
+                                                    color: chatTheme.colorTheme.accentError,
+                                                  ),
+                                                );
+                                                if (res == true) {
+                                                  await _channelListController
+                                                      .deleteChannel(channel);
+                                                }
+                                              },
+                                            ),
+                                        ],
                                       ),
+                                      child: Center(
+                                          child: Container(
+                                              width: 140,
+                                              height: 140,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(10),
+                                                border: Border.all(
+                                                  color: Colors.grey.withOpacity(0.2),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              child: defaultWidget)),
+                                    );
+                                  },
+                                  onChannelTap: (channel) {
+                                    setState(() {
+                                      selectedChannel = channel;
+                                    });
+                                  },
+                                  emptyBuilder: (_) {
+                                    return Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: StreamScrollViewEmptyWidget(
+                                          emptyIcon: StreamSvgIcon.message(
+                                            size: 148,
+                                            color: StreamChatTheme.of(context).colorTheme.disabled,
+                                          ),
+                                          emptyTitle: TextButton(
+                                            onPressed: () {
+                                              GoRouter.of(context).pushNamed(Routes.NEW_CHAT.name);
+                                            },
+                                            child: Text(
+                                              'Start a chat',
+                                              style: StreamChatTheme.of(context)
+                                                  .textTheme
+                                                  .bodyBold
+                                                  .copyWith(
+                                                    color: StreamChatTheme.of(context)
+                                                        .colorTheme
+                                                        .accentPrimary,
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      },
                     ),
                   ),
-                ),
+          ],
         ),
       ),
     );
+  }
+}
+
+Future<dynamic> showNewGroupModal(BuildContext context) {
+  return showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(
+                  bottom:
+                      MediaQuery.of(context).viewInsets.bottom), // Accommodates for the keyboard
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('New group',
+                      style: TextStyle(
+                          fontFamily: 'Avenir',
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[700])),
+                  TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Group name',
+                    ),
+                  ),
+                  MainButton(
+                      color: Colors.blue,
+                      text: 'Create',
+                      fontSize: 16,
+                      onPressed: () {
+                        StreamChat.of(context)
+                            .client
+                            .channel('messaging',
+                                id: DateTime.now().millisecondsSinceEpoch.toString(),
+                                extraData: {
+                                  'name':
+                                      'New group ${DateTime.now().millisecondsSinceEpoch % 1000}',
+                                  'balance': 134.0
+                                })
+                            .watch()
+                            .then((state) {
+                              print('refresh');
+                              // Then we can refresh the UI
+                              Navigator.pop(context);
+                            });
+                      })
+                ],
+              ),
+            ),
+          ),
+        );
+      });
+}
+
+class MainButton extends StatelessWidget {
+  const MainButton({
+    super.key,
+    required this.color,
+    required this.text,
+    this.onPressed,
+    required this.fontSize,
+  });
+
+  final Color color;
+  final String text;
+  final Function? onPressed;
+  final double fontSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        // Rounded border
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0), side: BorderSide(color: color)))),
+        onPressed: onPressed as void Function()?,
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Text(text,
+              style: TextStyle(color: color, fontSize: fontSize, fontWeight: FontWeight.w600)),
+        ));
   }
 }

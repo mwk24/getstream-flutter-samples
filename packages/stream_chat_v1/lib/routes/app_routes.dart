@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:example/new_pages/home_page.dart';
 import 'package:example/pages/advanced_options_page.dart';
 import 'package:example/pages/channel_list_page.dart';
 import 'package:example/pages/channel_page.dart';
@@ -20,24 +21,19 @@ final appRoutes = [
   GoRoute(
     name: Routes.CHANNEL_LIST_PAGE.name,
     path: Routes.CHANNEL_LIST_PAGE.path,
-    builder: (BuildContext context, GoRouterState state) =>
-        const ChannelListPage(),
+    builder: (BuildContext context, GoRouterState state) => const HomePage(),
     routes: [
       GoRoute(
         name: Routes.CHANNEL_PAGE.name,
         path: Routes.CHANNEL_PAGE.path,
         builder: (context, state) {
-          final channel = StreamChat.of(context)
-              .client
-              .state
-              .channels[state.pathParameters['cid']];
+          final channel = StreamChat.of(context).client.state.channels[state.pathParameters['cid']];
           final messageId = state.queryParameters['mid'];
           final parentId = state.queryParameters['pid'];
 
           Message? parentMessage;
           if (parentId != null) {
-            parentMessage = channel?.state!.messages
-                .firstWhereOrNull((it) => it.id == parentId);
+            parentMessage = channel?.state!.messages.firstWhereOrNull((it) => it.id == parentId);
           }
 
           return StreamChannel(
@@ -59,10 +55,8 @@ final appRoutes = [
             name: Routes.CHAT_INFO_SCREEN.name,
             path: Routes.CHAT_INFO_SCREEN.path,
             builder: (BuildContext context, GoRouterState state) {
-              final channel = StreamChat.of(context)
-                  .client
-                  .state
-                  .channels[state.pathParameters['cid']];
+              final channel =
+                  StreamChat.of(context).client.state.channels[state.pathParameters['cid']];
               return StreamChannel(
                 channel: channel!,
                 child: ChatInfoScreen(
@@ -76,10 +70,8 @@ final appRoutes = [
             name: Routes.GROUP_INFO_SCREEN.name,
             path: Routes.GROUP_INFO_SCREEN.path,
             builder: (BuildContext context, GoRouterState state) {
-              final channel = StreamChat.of(context)
-                  .client
-                  .state
-                  .channels[state.pathParameters['cid']];
+              final channel =
+                  StreamChat.of(context).client.state.channels[state.pathParameters['cid']];
               return StreamChannel(
                 channel: channel!,
                 child: GroupInfoScreen(
@@ -117,13 +109,11 @@ final appRoutes = [
   GoRoute(
     name: Routes.CHOOSE_USER.name,
     path: Routes.CHOOSE_USER.path,
-    builder: (BuildContext context, GoRouterState state) =>
-        const ChooseUserPage(),
+    builder: (BuildContext context, GoRouterState state) => const ChooseUserPage(),
   ),
   GoRoute(
     name: Routes.ADVANCED_OPTIONS.name,
     path: Routes.ADVANCED_OPTIONS.path,
-    builder: (BuildContext context, GoRouterState state) =>
-        const AdvancedOptionsPage(),
+    builder: (BuildContext context, GoRouterState state) => const AdvancedOptionsPage(),
   ),
 ];
