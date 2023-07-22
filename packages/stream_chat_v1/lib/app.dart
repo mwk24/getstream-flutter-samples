@@ -59,7 +59,7 @@ Future<void> _onFirebaseBackgroundMessage(RemoteMessage message) async {
   if (userId == null || token == null) {
     return;
   }
-  final chatClient = buildStreamChatClient(apiKey ?? kDefaultStreamApiKey);
+  final chatClient = buildStreamChatClient(kDefaultStreamApiKey);
   try {
     await chatClient.connectUser(
       User(id: userId),
@@ -136,7 +136,10 @@ class _StreamChatSampleAppState extends State<StreamChatSampleApp>
       userId = await secureStorage.read(key: kStreamUserId);
       token = await secureStorage.read(key: kStreamToken);
     }
-    final client = buildStreamChatClient(apiKey ?? kDefaultStreamApiKey);
+    // NB: Secure storage is not wiped with the app delete
+    token =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoic2FsdmF0b3JlIn0.yGtjW7n6f7pTruxVupuUdqFCDzSAK3P4U8IML07t7Vk';
+    final client = buildStreamChatClient(kDefaultStreamApiKey);
 
     if (userId != null && token != null) {
       await client.connectUser(
