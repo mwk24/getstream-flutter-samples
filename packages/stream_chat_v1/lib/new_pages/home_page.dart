@@ -1,7 +1,8 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:example/new_pages/header.dart';
 import 'package:example/widgets/channel_list.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide PhoneAuthProvider;
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> with StreamChannelListEventHandler 
     String personaApiUrl = 'https://us-central1-persona-2c9f1.cloudfunctions.net/api';
 
     getUserAccount() async {
-      String userToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+      String? userToken = await FirebaseAuth.instance.currentUser!.getIdToken();
 
       try {
         Response accountResponse =
@@ -52,10 +53,48 @@ class _HomePageState extends State<HomePage> with StreamChannelListEventHandler 
       }
     }
 
-    getUserAccount();
+    FirebaseAuth.instance.userChanges().listen((user) async {
+      if (FirebaseAuth.instance.currentUser == null) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return SignInScreen(
+              providers: [PhoneAuthProvider()],
+              actions: [
+                AuthStateChangeAction<SignedIn>((context, state) {
+                  Navigator.of(context).pop();
+                  getUserAccount();
+                }),
+              ],
+            );
+          },
+        );
+      }
+    });
 
     super.initState();
   }
+
+  // Future loginFirebase() async {
+  //   FirebaseAuth.instance.verifyPhoneNumber(
+  //       phoneNumber: '+14153788363',
+  //       verificationCompleted: (PhoneAuthCredential credential) async {
+  //         await FirebaseAuth.instance.signInWithCredential(credential);
+  //       },
+  //       verificationFailed: (FirebaseAuthException e) {
+  //         print(e);
+  //       },
+  //       codeSent: (String verificationId, int? resendToken) async {
+  //         String smsCode = '111111';
+  //         PhoneAuthCredential credential =
+  //             PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+  //         await FirebaseAuth.instance.signInWithCredential(credential);
+  //         return;
+  //       },
+  //       codeAutoRetrievalTimeout: (String verificationId) {
+  //         print(verificationId);
+  //       });
+  // }
 
   @override
   void onChannelUpdated(Event event, StreamChannelListController controller) {
