@@ -1,9 +1,11 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:example/new_pages/header.dart';
 import 'package:example/widgets/channel_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:http/http.dart';
 
 import '../routes/routes.dart';
 
@@ -29,6 +31,31 @@ class _HomePageState extends State<HomePage> with StreamChannelListEventHandler 
       // ),
       presence: true,
       eventHandler: this);
+
+  @override
+  void initState() {
+    String personaApiUrl = 'https://us-central1-persona-2c9f1.cloudfunctions.net/api';
+
+    getUserAccount() async {
+      String userToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+
+      try {
+        Response accountResponse =
+            await get(Uri.parse('$personaApiUrl/payment/account/user'), headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $userToken',
+        });
+        print(accountResponse.body);
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    getUserAccount();
+
+    super.initState();
+  }
 
   @override
   void onChannelUpdated(Event event, StreamChannelListController controller) {
