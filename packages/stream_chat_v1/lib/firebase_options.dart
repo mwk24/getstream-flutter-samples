@@ -44,40 +44,46 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyD6ZgqOySWdKxqc7z3-g6x6cl4KcayCVFs',
-    appId: '1:484969089316:web:c5d3da5febbbc8bf9dcbb1',
-    messagingSenderId: '484969089316',
-    projectId: 'group-fund-7becd',
-    authDomain: 'group-fund-7becd.firebaseapp.com',
-    storageBucket: 'group-fund-7becd.appspot.com',
-    measurementId: 'G-8YL5Z61T9Y',
+    apiKey: 'AIzaSyC2RgJ_uIjEufkWbGdvRjBzkXl5NrfcKwk',
+    appId: '1:659704987877:web:5ec1f75ab87ee33944940c',
+    messagingSenderId: '659704987877',
+    projectId: 'persona-srv-301611',
+    authDomain: 'persona-srv-301611.firebaseapp.com',
+    databaseURL: 'https://persona-srv-301611-default-rtdb.firebaseio.com',
+    storageBucket: 'persona-srv-301611.appspot.com',
+    measurementId: 'G-6NZYPXPX1K',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB2p1vCrvG785lkl7zc9HapJFP6xjnxk7c',
-    appId: '1:484969089316:android:ab149ef6835f934e9dcbb1',
-    messagingSenderId: '484969089316',
-    projectId: 'group-fund-7becd',
-    storageBucket: 'group-fund-7becd.appspot.com',
+    apiKey: 'AIzaSyDi-Uf13vpp9te4CFdka4s14jkQgdFBsSo',
+    appId: '1:659704987877:android:14a1c9118193c1d244940c',
+    messagingSenderId: '659704987877',
+    projectId: 'persona-srv-301611',
+    databaseURL: 'https://persona-srv-301611-default-rtdb.firebaseio.com',
+    storageBucket: 'persona-srv-301611.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAm3j8STvWtK8vjPNim3OGFhz6mblrmt1U',
-    appId: '1:484969089316:ios:942381ada05ceab09dcbb1',
-    messagingSenderId: '484969089316',
-    projectId: 'group-fund-7becd',
-    storageBucket: 'group-fund-7becd.appspot.com',
-    iosClientId: '484969089316-e0jvl38928e1f6hvfpd7mtfh93cm8tlk.apps.googleusercontent.com',
-    iosBundleId: 'com.mwk24.getstreamdemo',
+    apiKey: 'AIzaSyBq0S-tRVqgncxagGf9TTK6o8uZ-GEhdzk',
+    appId: '1:659704987877:ios:a6db5edd25cac63844940c',
+    messagingSenderId: '659704987877',
+    projectId: 'persona-srv-301611',
+    databaseURL: 'https://persona-srv-301611-default-rtdb.firebaseio.com',
+    storageBucket: 'persona-srv-301611.appspot.com',
+    androidClientId: '659704987877-3rgt4munjfcn87pn3bltpdee0pdga1ru.apps.googleusercontent.com',
+    iosClientId: '659704987877-sopog619c77lr922bfoaf91llg1tc92e.apps.googleusercontent.com',
+    iosBundleId: 'com.persona.flutter-test',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAm3j8STvWtK8vjPNim3OGFhz6mblrmt1U',
-    appId: '1:484969089316:ios:1eb82990e1b02ca39dcbb1',
-    messagingSenderId: '484969089316',
-    projectId: 'group-fund-7becd',
-    storageBucket: 'group-fund-7becd.appspot.com',
-    iosClientId: '484969089316-r44lke7rq0b2oup1nvvo8c31pd3ahfvc.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBq0S-tRVqgncxagGf9TTK6o8uZ-GEhdzk',
+    appId: '1:659704987877:ios:29004bb7afa7b66144940c',
+    messagingSenderId: '659704987877',
+    projectId: 'persona-srv-301611',
+    databaseURL: 'https://persona-srv-301611-default-rtdb.firebaseio.com',
+    storageBucket: 'persona-srv-301611.appspot.com',
+    androidClientId: '659704987877-3rgt4munjfcn87pn3bltpdee0pdga1ru.apps.googleusercontent.com',
+    iosClientId: '659704987877-nepofm3r4ovnuklru0i49rqipf7tnn0l.apps.googleusercontent.com',
     iosBundleId: 'io.getstream.streamChatV1',
   );
 }

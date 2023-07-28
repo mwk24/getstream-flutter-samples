@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>484969089316-e0jvl38928e1f6hvfpd7mtfh93cm8tlk.apps.googleusercontent.com</string>
+	<string>659704987877-sopog619c77lr922bfoaf91llg1tc92e.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.484969089316-e0jvl38928e1f6hvfpd7mtfh93cm8tlk</string>
+	<string>com.googleusercontent.apps.659704987877-sopog619c77lr922bfoaf91llg1tc92e</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>659704987877-3rgt4munjfcn87pn3bltpdee0pdga1ru.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAm3j8STvWtK8vjPNim3OGFhz6mblrmt1U</string>
+	<string>AIzaSyBq0S-tRVqgncxagGf9TTK6o8uZ-GEhdzk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>484969089316</string>
+	<string>659704987877</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.mwk24.getstreamdemo</string>
+	<string>com.persona.flutter-test</string>
 	<key>PROJECT_ID</key>
-	<string>group-fund-7becd</string>
+	<string>persona-srv-301611</string>
 	<key>STORAGE_BUCKET</key>
-	<string>group-fund-7becd.appspot.com</string>
+	<string>persona-srv-301611.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:484969089316:ios:942381ada05ceab09dcbb1</string>
+	<string>1:659704987877:ios:a6db5edd25cac63844940c</string>
+	<key>DATABASE_URL</key>
+	<string>https://persona-srv-301611-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

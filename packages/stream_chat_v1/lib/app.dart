@@ -137,8 +137,7 @@ class _StreamChatSampleAppState extends State<StreamChatSampleApp>
       token = await secureStorage.read(key: kStreamToken);
     }
     // NB: Secure storage is not wiped with the app delete
-    token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoic2FsdmF0b3JlIn0.yGtjW7n6f7pTruxVupuUdqFCDzSAK3P4U8IML07t7Vk';
+
     final client = buildStreamChatClient(kDefaultStreamApiKey);
 
     if (userId != null && token != null) {

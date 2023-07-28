@@ -137,6 +137,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  cloud_firestore:
+    dependency: "direct main"
+    description:
+      name: cloud_firestore
+      sha256: f1a06ad4499ed9ab73703560d44893e6b9e66ce3923c9121f4ef3981c972057f
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.8.4"
+  cloud_firestore_platform_interface:
+    dependency: transitive
+    description:
+      name: cloud_firestore_platform_interface
+      sha256: "86bd1865abbeb09a7d09da3e70364a09f894937270651fc611a1c6d6a9f7b02c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.15.3"
+  cloud_firestore_web:
+    dependency: transitive
+    description:
+      name: cloud_firestore_web
+      sha256: ac2eeb2a7ab1928c3aacc30eed750fa839d6f620e112a5459e321df217be2f47
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.3"
   cloud_functions:
     dependency: "direct main"
     description:
@@ -521,6 +545,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.6.1"
+  firebase_ui_firestore:
+    dependency: "direct main"
+    description:
+      name: firebase_ui_firestore
+      sha256: "2c9e6834b2ac690306687f8c684ed9a39e223e1cb8b2b63837e4c11870d11351"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.6"
   firebase_ui_localizations:
     dependency: transitive
     description:
@@ -1287,46 +1319,46 @@ packages:
     description:
       path: "packages/stream_chat"
       ref: develop
-      resolved-ref: "81fe4d919d3b121aafea3d77013e8f7a1b226fdb"
+      resolved-ref: "51e005deacc98788b43635be1a2ac25a52ababb5"
       url: "https://github.com/GetStream/stream-chat-flutter.git"
     source: git
-    version: "6.6.0"
+    version: "6.7.0"
   stream_chat_flutter:
     dependency: "direct main"
     description:
       path: "packages/stream_chat_flutter"
       ref: develop
-      resolved-ref: "81fe4d919d3b121aafea3d77013e8f7a1b226fdb"
+      resolved-ref: "51e005deacc98788b43635be1a2ac25a52ababb5"
       url: "https://github.com/GetStream/stream-chat-flutter.git"
     source: git
-    version: "6.7.0"
+    version: "6.8.0"
   stream_chat_flutter_core:
     dependency: "direct overridden"
     description:
       path: "packages/stream_chat_flutter_core"
       ref: develop
-      resolved-ref: "81fe4d919d3b121aafea3d77013e8f7a1b226fdb"
+      resolved-ref: "51e005deacc98788b43635be1a2ac25a52ababb5"
       url: "https://github.com/GetStream/stream-chat-flutter.git"
     source: git
-    version: "6.6.0"
+    version: "6.7.0"
   stream_chat_localizations:
     dependency: "direct main"
     description:
       path: "packages/stream_chat_localizations"
       ref: develop
-      resolved-ref: "81fe4d919d3b121aafea3d77013e8f7a1b226fdb"
+      resolved-ref: "51e005deacc98788b43635be1a2ac25a52ababb5"
       url: "https://github.com/GetStream/stream-chat-flutter.git"
     source: git
-    version: "5.7.0"
+    version: "5.8.0"
   stream_chat_persistence:
     dependency: "direct main"
     description:
       path: "packages/stream_chat_persistence"
       ref: develop
-      resolved-ref: "81fe4d919d3b121aafea3d77013e8f7a1b226fdb"
+      resolved-ref: "51e005deacc98788b43635be1a2ac25a52ababb5"
       url: "https://github.com/GetStream/stream-chat-flutter.git"
     source: git
-    version: "6.6.0"
+    version: "6.7.0"
   streaming_shared_preferences:
     dependency: "direct main"
     description:

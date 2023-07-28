@@ -5,7 +5,9 @@ const sentryDsn = 'https://6381ef88de4140db8f5e25ab37e0f08c@o1213503.ingest.sent
 const kDefaultStreamApiKey = 'fnpppp8puc68'; //'kv7mcsxr24p8';
 
 final defaultUsers = <String, User>{
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoic2FsdmF0b3JlIn0.pgiJz7sIc7iP29BHKFwe3nLm5-OaR_1l2P-SlgiC9a8':
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoic2FsdmF0b3JlIn0.yGtjW7n6f7pTruxVupuUdqFCDzSAK3P4U8IML07t7Vk':
+
+      //'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoic2FsdmF0b3JlIn0.pgiJz7sIc7iP29BHKFwe3nLm5-OaR_1l2P-SlgiC9a8':
       User(
     id: 'salvatore',
     extraData: const {
